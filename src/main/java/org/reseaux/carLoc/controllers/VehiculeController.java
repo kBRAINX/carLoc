@@ -3,9 +3,11 @@ package org.reseaux.carLoc.controllers;
 import org.reseaux.carLoc.dto.VehiculeDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.ImageVehicule;
+import org.reseaux.carLoc.models.Location;
 import org.reseaux.carLoc.models.PriceVehicule;
 import org.reseaux.carLoc.models.Vehicule;
 import org.reseaux.carLoc.services.ImageVehiculeService;
+import org.reseaux.carLoc.services.LocationService;
 import org.reseaux.carLoc.services.PriceVehiculeService;
 import org.reseaux.carLoc.services.VehiculeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class VehiculeController {
     private ImageVehiculeService imageVehiculeService;
     @Autowired
     private PriceVehiculeService priceVehiculeService;
+    @Autowired
+    private LocationService locationService;
 
     @GetMapping
     public ResponseEntity<List<Vehicule>> findAll() {
@@ -51,6 +55,18 @@ public class VehiculeController {
     @GetMapping("/{Immatriculation}/prices")
     public List<PriceVehicule> getPrices(@PathVariable String Immatriculation) {
         return priceVehiculeService.findByVehiculeImmatriculation(Immatriculation);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<Vehicule>> findAvailable() {
+        List<Vehicule> vehicules = vehiculeService.findByStatut(true);
+        return new ResponseEntity<>(vehicules, HttpStatus.OK);
+    }
+
+    @GetMapping("/{immatriculation}/locations")
+    public ResponseEntity<List<Location>> getLocations(@PathVariable("immatriculation") String immatriculation) {
+        List<Location> locations = locationService.findByVehiculeId(immatriculation);
+        return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
     @PostMapping

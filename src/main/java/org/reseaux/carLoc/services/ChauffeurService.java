@@ -37,6 +37,10 @@ public class ChauffeurService {
         return chauffeurRepository.findByAgenceId(id);
     }
 
+    public List<Chauffeur> findByStatut(boolean statut) {
+        return chauffeurRepository.findByStatut(statut);
+    }
+
     public Chauffeur create(ChauffeurDTO chauffeurDTO){
         Chauffeur chauffeur = new Chauffeur();
         Long newId = cassandraIdGenerator.getNextId("chauffeurs");
@@ -58,6 +62,7 @@ public class ChauffeurService {
             chauffeur.setEmail(chauffeurDTO.getEmail());
             chauffeur.setCity(chauffeurDTO.getCity());
             chauffeur.setPhoneNumber(chauffeurDTO.getPhoneNumber());
+            chauffeur.setStatut(chauffeurDTO.getStatut());
             return chauffeurRepository.save(chauffeur);
         } else {
             throw new ResourceNotFoundException("Syndicat not found with id " + id);

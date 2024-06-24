@@ -5,17 +5,18 @@ import lombok.Data;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import java.util.Date;
+
 @Data
 @Entity
-@Table(value = "chauffeurs")
-public class Chauffeur {
+@Table(value = "locations")
+public class Location {
     @PrimaryKey
     private long id;
-    private long agenceId;
-    private long syndicatId;
-    private String name;
-    private String email;
-    private String city;
-    private String phoneNumber;
-    private Boolean statut = true;
+    private String vehiculeId;
+    private Long chauffeurId;
+    private Date dateDebut;
+    private Date dateFin;
+    private double montant;
+    private Date createdAt;
 }

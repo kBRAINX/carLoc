@@ -11,4 +11,5 @@ public class ChauffeurDTO {
     private String email;
     private String city;
     private String phoneNumber;
+    private Boolean statut;
 }

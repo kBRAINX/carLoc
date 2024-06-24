@@ -14,4 +14,7 @@ public interface ChauffeurRepository extends CassandraRepository<Chauffeur, Long
 
     @AllowFiltering
     List<Chauffeur> findByAgenceId(long AgenceId);
+
+    @AllowFiltering
+    List<Chauffeur> findByStatut(boolean statut);
 }

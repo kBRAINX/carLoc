@@ -33,6 +33,10 @@ public class VehiculeService {
         return vehiculeRepository.findByCategoryId(categoryId);
     }
 
+    public List<Vehicule> findByStatut(boolean statut) {
+        return vehiculeRepository.findByStatut(statut);
+    }
+
     public Vehicule create(VehiculeDTO vehiculeDTO) {
         Vehicule vehicule = new Vehicule();
         vehicule.setImmatriculation(vehiculeDTO.getImmatriculation());
