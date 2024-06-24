@@ -14,4 +14,7 @@ public interface LocationRepository extends CassandraRepository<Location, Long> 
 
     @AllowFiltering
     List<Location> findByChauffeurId(long chauffeurId);
+
+    @AllowFiltering
+    List<Location> findByClientId(long clientId);
 }

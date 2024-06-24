@@ -5,19 +5,15 @@ import lombok.Data;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.util.Date;
-
 @Data
 @Entity
-@Table(value = "locations")
-public class Location {
+@Table(value = "clients")
+public class Client {
     @PrimaryKey
     private long id;
-    private long clientId;
-    private String vehiculeId;
-    private Long chauffeurId;
-    private Date dateDebut;
-    private Date dateFin;
-    private double montant;
-    private Date createdAt;
+    private String name;
+    private String email;
+    private String password;
+    private String sexe;
+    private String phone;
 }

@@ -37,6 +37,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public Optional<User> login(UserDTO loginDto) {
+        Optional<User> userOpt = userRepository.findByEmail(loginDto.getEmail());
+        if(userOpt.isPresent()){
+            User user = userOpt.get();
+            if(user.getPassword().equals(loginDto.getPassword())){
+                return Optional.of(user);
+            }
+        }
+        return Optional.empty();
+    }
+
     public User update(long userId, UserDTO userDTO) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {

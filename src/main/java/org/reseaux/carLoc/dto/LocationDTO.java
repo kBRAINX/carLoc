@@ -5,6 +5,7 @@ import java.util.Date;
 
 @Data
 public class LocationDTO {
+    private long clientId;
     private String vehiculeId;
     private Long chauffeurId;
     private Date dateDebut;

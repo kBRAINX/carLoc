@@ -21,7 +21,6 @@ import java.util.Optional;
 public class ChauffeurController {
     @Autowired
     private ChauffeurService chauffeurService;
-
     @Autowired
     private PriceChauffeurService priceChauffeurService;
     @Autowired

@@ -42,6 +42,13 @@ public class UserController {
         return new ResponseEntity<>(agences, HttpStatus.OK);
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<User> login(@RequestBody UserDTO loginDto) {
+        Optional<User> user = userService.login(loginDto);
+        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.UNAUTHORIZED));
+    }
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
         User createdUser = userService.create(userDTO);

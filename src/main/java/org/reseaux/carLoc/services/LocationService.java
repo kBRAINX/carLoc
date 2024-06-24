@@ -2,16 +2,8 @@ package org.reseaux.carLoc.services;
 
 import org.reseaux.carLoc.dto.LocationDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
-import org.reseaux.carLoc.models.Chauffeur;
-import org.reseaux.carLoc.models.Location;
-import org.reseaux.carLoc.models.PriceChauffeur;
-import org.reseaux.carLoc.models.PriceVehicule;
-import org.reseaux.carLoc.models.Vehicule;
-import org.reseaux.carLoc.repositories.ChauffeurRepository;
-import org.reseaux.carLoc.repositories.LocationRepository;
-import org.reseaux.carLoc.repositories.PriceChauffeurRepository;
-import org.reseaux.carLoc.repositories.PriceVehiculeRepository;
-import org.reseaux.carLoc.repositories.VehiculeRepository;
+import org.reseaux.carLoc.models.*;
+import org.reseaux.carLoc.repositories.*;
 import org.reseaux.carLoc.utils.CassandraIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,21 +17,18 @@ import java.util.Optional;
 public class LocationService {
     @Autowired
     private LocationRepository locationRepository;
-
     @Autowired
     private VehiculeRepository vehiculeRepository;
-
     @Autowired
     private ChauffeurRepository chauffeurRepository;
-
     @Autowired
     private PriceVehiculeRepository priceVehiculeRepository;
-
     @Autowired
     private PriceChauffeurRepository priceChauffeurRepository;
-
     @Autowired
     private CassandraIdGenerator cassandraIdGenerator;
+    @Autowired
+    private ClientRepository clientRepository;
 
 
     public List<Location> findAll() {
@@ -54,15 +43,25 @@ public class LocationService {
         return locationRepository.findByChauffeurId(chauffeurId);
     }
 
+    public List<Location> findByClientId(long clientId) {
+        return locationRepository.findByClientId(clientId);
+    }
+
     public Location create(LocationDTO locationDTO) {
         Location location = new Location();
         Long newId = cassandraIdGenerator.getNextId("locations");
         location.setId(newId);
+        location.setClientId(locationDTO.getClientId());
         location.setVehiculeId(locationDTO.getVehiculeId());
         location.setChauffeurId(locationDTO.getChauffeurId());
         location.setDateDebut(locationDTO.getDateDebut());
         location.setDateFin(locationDTO.getDateFin());
         location.setCreatedAt(new Date());
+
+        Optional<Client> clientOptional = clientRepository.findById(locationDTO.getClientId());
+        if (clientOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Client not found with id " + locationDTO.getClientId());
+        }
 
         Optional<Vehicule> vehiculeOptional = vehiculeRepository.findById(locationDTO.getVehiculeId());
         if (vehiculeOptional.isEmpty()) {
@@ -88,7 +87,7 @@ public class LocationService {
         location.setMontant(montant);
         Location savedLocation = locationRepository.save(location);
 
-        sendNotification(savedLocation, vehicule, locationDTO.getChauffeurId());
+        sendNotification(savedLocation, vehicule, locationDTO.getChauffeurId(), locationDTO.getClientId());
 
         return savedLocation;
     }
@@ -126,18 +125,26 @@ public class LocationService {
         return montant;
     }
 
-    private void sendNotification(Location location, Vehicule vehicule, Long chauffeurId) {
-        String message = "Location Details:\n" +
-            "Vehicule: " + vehicule.getMarque() + " " + vehicule.getImmatriculation() + "\n" +
+    private void sendNotification(Location location, Vehicule vehicule, Long chauffeurId, Long clientId) {
+        String message = "Location Details:\n"+
+            "Vehicule: " + vehicule.getMarque() + " immatriculation: " + vehicule.getImmatriculation() + "\n" +
             "Date Debut: " + location.getDateDebut() + "\n" +
             "Date Fin: " + location.getDateFin() + "\n" +
             "Montant: " + location.getMontant() + "\n";
+
+        if(clientId != null){
+            Optional<Client> clientOptional = clientRepository.findById(clientId);
+            if (clientOptional.isPresent()) {
+                Client client = clientOptional.get();
+                message += "Client: " + client.getName() + " Phone number: "+ client.getPhone() + "\n";
+            }
+        }
 
         if (chauffeurId != null) {
             Optional<Chauffeur> chauffeurOptional = chauffeurRepository.findById(chauffeurId);
             if (chauffeurOptional.isPresent()) {
                 Chauffeur chauffeur = chauffeurOptional.get();
-                message += "Chauffeur: " + chauffeur.getName() + " " + chauffeur.getPhoneNumber() + "\n";
+                message += "Chauffeur: " + chauffeur.getName() + " Phone number: "+ chauffeur.getPhoneNumber() + "\n";
             }
         }
 
