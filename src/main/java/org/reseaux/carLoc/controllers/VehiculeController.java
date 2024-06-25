@@ -2,14 +2,10 @@ package org.reseaux.carLoc.controllers;
 
 import org.reseaux.carLoc.dto.VehiculeDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
-import org.reseaux.carLoc.models.ImageVehicule;
-import org.reseaux.carLoc.models.Location;
-import org.reseaux.carLoc.models.PriceVehicule;
-import org.reseaux.carLoc.models.Vehicule;
-import org.reseaux.carLoc.services.ImageVehiculeService;
-import org.reseaux.carLoc.services.LocationService;
-import org.reseaux.carLoc.services.PriceVehiculeService;
-import org.reseaux.carLoc.services.VehiculeService;
+import org.reseaux.carLoc.models.*;
+import org.reseaux.carLoc.models.options.Carburant;
+import org.reseaux.carLoc.models.options.Transmission;
+import org.reseaux.carLoc.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +26,12 @@ public class VehiculeController {
     private ImageVehiculeService imageVehiculeService;
     @Autowired
     private PriceVehiculeService priceVehiculeService;
+    @Autowired
+    private ReservationService reservationService;
+    @Autowired
+    private PosteService posteService;
+    @Autowired
+    private ChauffeurService chauffeurService;
     @Autowired
     private LocationService locationService;
 
@@ -57,14 +59,47 @@ public class VehiculeController {
         return priceVehiculeService.findByVehiculeImmatriculation(Immatriculation);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Vehicule>> search(
+        @RequestParam(name = "carburant", required = false) Carburant carburant,
+        @RequestParam(name = "transmission", required = false) Transmission transmission){
+        List<Vehicule> vehicules = vehiculeService.searchVehicles(carburant, transmission);
+        return new ResponseEntity<>(vehicules, HttpStatus.OK);
+    }
+
     @GetMapping("/available")
     public ResponseEntity<List<Vehicule>> findAvailable() {
         List<Vehicule> vehicules = vehiculeService.findByStatut(true);
         return new ResponseEntity<>(vehicules, HttpStatus.OK);
     }
 
+    @GetMapping("/{immatriculation}/reservations")
+    public ResponseEntity<List<Reservation>> getReservations(@PathVariable("immatriculation") String immatriculation) {
+        List<Reservation> reservations = reservationService.findByVehiculeId(immatriculation);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @GetMapping("/{immatriculation}/chauffeurs")
+    public ResponseEntity<List<Chauffeur>> getChauffeurs(@PathVariable("immatriculation") String immatriculation) {
+        Optional<Vehicule> vehicule = vehiculeService.findOne(immatriculation);
+        if (vehicule.isPresent()) {
+            long posteId =  vehicule.get().getPosteId();
+            Optional<Poste> poste = posteService.findOne(posteId);
+            if (poste.isPresent()) {
+                String city = poste.get().getLocalisation();
+                long agenceId = poste.get().getAgenceId();
+                List<Chauffeur> chauffeurs = chauffeurService.findByAgenceIdAndCity(agenceId, city);
+                return new ResponseEntity<>(chauffeurs, HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/{immatriculation}/locations")
-    public ResponseEntity<List<Location>> getLocations(@PathVariable("immatriculation") String immatriculation) {
+    public ResponseEntity<List<Location>> getLocations(@PathVariable("immatriculation") String immatriculation){
         List<Location> locations = locationService.findByVehiculeId(immatriculation);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }

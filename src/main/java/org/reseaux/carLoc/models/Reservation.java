@@ -2,6 +2,7 @@ package org.reseaux.carLoc.models;
 
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import lombok.Data;
+import org.reseaux.carLoc.models.options.Type;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -9,20 +10,17 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(value = "locations")
-public class Location {
+@Table(value = "reservations")
+public class Reservation {
     @PrimaryKey
     private long id;
-    private long reservationId;
-    private String vehiculeId;
-    private long chauffeurId;
     private long clientId;
-    private double montant;
+    private String vehiculeId;
+    private Long chauffeurId;
     private Date dateDebut;
     private Date dateFin;
-    private double kilometrageDebut;
-    private double kilometrageFin;
-    private double cout_carburant;
+    private double montant;
+    private Type type;
+    private double startKilometrage;
     private Date createdAt;
-    private Date updatedAt;
 }

@@ -6,8 +6,9 @@ import org.reseaux.carLoc.models.options.Siege;
 @Data
 public class PosteDTO {
     private long id;
-    private long categoryId;
+    private long agenceId;
     private String name;
     private String localisation;
     private Siege siege;
+    private String description;
 }

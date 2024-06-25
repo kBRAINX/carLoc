@@ -3,9 +3,9 @@ package org.reseaux.carLoc.dto;
 import lombok.Data;
 
 @Data
-public class ImageVehiculeDTO {
+public class PosteImageDTO {
     private Long imageId;
-    private String vehiculeImmatriculation;
+    private long posteId; ;
     private String name;
     private String type;
     private byte[] imageData;

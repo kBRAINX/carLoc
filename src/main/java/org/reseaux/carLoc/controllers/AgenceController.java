@@ -43,8 +43,8 @@ public class AgenceController {
     }
 
     @GetMapping("/{id}/services")
-    public ResponseEntity<List<Poste>> findByCategoryId(@PathVariable("id") long categoryId) {
-        List<Poste> postes = posteService.findByCategoryId(categoryId);
+    public ResponseEntity<List<Poste>> findByCategoryId(@PathVariable("id") long agenceId) {
+        List<Poste> postes = posteService.findByAgenceId(agenceId);
         return new ResponseEntity<>(postes, HttpStatus.OK);
     }
 

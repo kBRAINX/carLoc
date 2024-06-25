@@ -1,6 +1,5 @@
 package org.reseaux.carLoc.models;
 
-import com.datastax.oss.driver.api.core.type.DataType;
 import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,11 +15,11 @@ import org.springframework.data.cassandra.core.mapping.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "image_vehicule")
-public class ImageVehicule {
+@Table("service_image")
+public class PosteImage {
     @PrimaryKey
     private Long id;
-    private String vehiculeImmatriculation;
+    private long posteId;
     private String name;
     private String type;
 

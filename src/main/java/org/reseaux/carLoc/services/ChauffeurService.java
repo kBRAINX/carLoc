@@ -37,6 +37,10 @@ public class ChauffeurService {
         return chauffeurRepository.findByAgenceId(id);
     }
 
+    public List<Chauffeur> findByAgenceIdAndCity(long agenceId, String city){
+        return chauffeurRepository.findByAgenceIdAndCity(agenceId, city);
+    }
+
     public List<Chauffeur> findByStatut(boolean statut) {
         return chauffeurRepository.findByStatut(statut);
     }

@@ -4,8 +4,10 @@ import org.reseaux.carLoc.dto.ClientDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.Client;
 import org.reseaux.carLoc.models.Location;
+import org.reseaux.carLoc.models.Reservation;
 import org.reseaux.carLoc.services.ClientService;
 import org.reseaux.carLoc.services.LocationService;
+import org.reseaux.carLoc.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
     @Autowired
+    private ReservationService reservationService;
+    @Autowired
     private LocationService locationService;
 
     @GetMapping
@@ -33,8 +37,14 @@ public class ClientController {
         return client.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/reservations")
+    public ResponseEntity<List<Reservation>> getReservations(@PathVariable("id") long clientId) {
+        List<Reservation> reservations = reservationService.findByClientId(clientId);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/locations")
-    public ResponseEntity<List<Location>> getLocations(@PathVariable("id") long clientId) {
+    public ResponseEntity<List<Location>> getLocations(@PathVariable("id") long clientId){
         List<Location> locations = locationService.findByClientId(clientId);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }

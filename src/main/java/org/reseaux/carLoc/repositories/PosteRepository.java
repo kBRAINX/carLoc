@@ -12,5 +12,5 @@ import java.util.List;
 @Primary
 public interface PosteRepository extends CassandraRepository<Poste, Long> {
     @AllowFiltering
-    List<Poste> findByCategoryId(long categoryId);
+    List<Poste> findByAgenceId(long agenceId);
 }

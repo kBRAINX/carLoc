@@ -31,23 +31,40 @@ public class ImageVehiculeService {
             long newId = cassandraIdGenerator.getNextId("image_vehicule");
             imageVehicule.setId(newId);
             imageVehicule.setVehiculeImmatriculation(vehicule.getImmatriculation());
-            imageVehicule.setImageData(file.getBytes());
+            var imageToSave = ImageVehicule.builder()
+                .name(file.getOriginalFilename())
+                .type(file.getContentType())
+                .imageData(file.getBytes())
+                .build();
+            imageVehicule.setName(imageToSave.getName());
+            imageVehicule.setType(imageToSave.getType());
+            imageVehicule.setImageData(imageToSave.getImageData());
             return  imageVehiculeRepository.save(imageVehicule);
         } else {
             throw new IOException("Vehicule not found");
         }
     }
 
+    public byte[] downloadImage(String imageName) {
+        Optional<ImageVehicule> dbImage = imageVehiculeRepository.findByName(imageName);
+        return dbImage.map(ImageVehicule::getImageData).orElse(null);
+    }
+
     public List<ImageVehicule> getImages(String vehiculeImmatriculation) {
         return imageVehiculeRepository.findByVehiculeImmatriculation(vehiculeImmatriculation);
     }
-
 
     public ImageVehicule update(Long imageId, MultipartFile file) throws IOException {
         Optional<ImageVehicule> optionalImageVehicule = imageVehiculeRepository.findById(imageId);
         if (optionalImageVehicule.isPresent()) {
             ImageVehicule imageVehicule = optionalImageVehicule.get();
-            imageVehicule.setImageData(file.getBytes());
+
+            if (file != null && !file.isEmpty()) {
+                imageVehicule.setName(file.getOriginalFilename());
+                imageVehicule.setType(file.getContentType());
+                imageVehicule.setImageData(file.getBytes());
+            }
+
             return imageVehiculeRepository.save(imageVehicule);
         } else {
             throw new IOException("Image not found");

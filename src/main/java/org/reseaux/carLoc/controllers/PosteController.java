@@ -3,14 +3,18 @@ package org.reseaux.carLoc.controllers;
 import org.reseaux.carLoc.dto.PosteDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.Poste;
+import org.reseaux.carLoc.models.PosteImage;
 import org.reseaux.carLoc.models.Vehicule;
+import org.reseaux.carLoc.services.PosteImageService;
 import org.reseaux.carLoc.services.PosteService;
 import org.reseaux.carLoc.services.VehiculeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +27,8 @@ public class PosteController {
 
     @Autowired
     private VehiculeService vehiculeService;
+    @Autowired
+    private PosteImageService posteImageService;
 
     @GetMapping
     public ResponseEntity<List<Poste>> findAll() {
@@ -43,10 +49,26 @@ public class PosteController {
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/{id}/images")
+    public ResponseEntity<List<PosteImage>> getImages(@PathVariable("id") long posteId){
+        List<PosteImage> images = posteImageService.getImages(posteId);
+        return new ResponseEntity<>(images, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Poste> create(@RequestBody PosteDTO posteDTO) {
         Poste createdPoste = posteService.create(posteDTO);
         return new ResponseEntity<>(createdPoste, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/images")
+    public ResponseEntity<PosteImage> uploadImage(@PathVariable long id, @RequestParam("file") MultipartFile file) {
+        try {
+            PosteImage uploadedImage = posteImageService.uploadImage(id, file);
+            return ResponseEntity.ok(uploadedImage);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @PatchMapping("/{id}")

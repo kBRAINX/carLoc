@@ -1,7 +1,6 @@
 package org.reseaux.carLoc.repositories;
 
-import org.reseaux.carLoc.models.Chauffeur;
-import org.reseaux.carLoc.models.Location;
+import org.reseaux.carLoc.models.Reservation;
 import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
@@ -9,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LocationRepository extends CassandraRepository<Location, Long> {
+public interface ReservationRepository extends CassandraRepository<Reservation, Long> {
     @AllowFiltering
-    List<Location> findByVehiculeId(String vehiculeId);
+    List<Reservation> findByVehiculeId(String vehiculeId);
 
     @AllowFiltering
-    List<Location> findByChauffeurId(long chauffeurId);
+    List<Reservation> findByChauffeurId(long chauffeurId);
 
     @AllowFiltering
-    List<Location> findByClientId(long clientId);
+    List<Reservation> findByClientId(long clientId);
 }

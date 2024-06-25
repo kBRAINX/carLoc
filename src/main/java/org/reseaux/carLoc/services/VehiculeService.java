@@ -3,6 +3,8 @@ package org.reseaux.carLoc.services;
 import org.reseaux.carLoc.dto.VehiculeDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.Vehicule;
+import org.reseaux.carLoc.models.options.Carburant;
+import org.reseaux.carLoc.models.options.Transmission;
 import org.reseaux.carLoc.repositories.VehiculeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +39,26 @@ public class VehiculeService {
         return vehiculeRepository.findByStatut(statut);
     }
 
+    public List<Vehicule> searchVehicles(Carburant carburant, Transmission transmission) {
+        boolean statut =  true;
+        if (carburant != null && transmission != null) {
+            return vehiculeRepository.findByCarburantAndTransmissionAndStatut(carburant, transmission, statut);
+        } else if (carburant != null) {
+            return vehiculeRepository.findByCarburantAndStatut(carburant, statut);
+        } else if (transmission != null) {
+            return vehiculeRepository.findByTransmissionAndStatut(transmission, statut);
+        }else {
+            return vehiculeRepository.findByStatut(statut);
+        }
+    }
+
     public Vehicule create(VehiculeDTO vehiculeDTO) {
         Vehicule vehicule = new Vehicule();
         vehicule.setImmatriculation(vehiculeDTO.getImmatriculation());
         vehicule.setPosteId(vehiculeDTO.getPosteId());
         vehicule.setCategoryId(vehiculeDTO.getCategoryId());
+        vehicule.setKilometrage_init(vehiculeDTO.getKilometrage_init());
+        vehicule.setKilometrage_updated(vehiculeDTO.getKilometrage_init());
         vehicule.setCreatedAt(new Date());
         return getVehicule(vehiculeDTO, vehicule);
     }
@@ -51,6 +68,7 @@ public class VehiculeService {
         if (optionalVehicule.isPresent()) {
             Vehicule vehicule = optionalVehicule.get();
             vehicule.setCategoryId(vehiculeDTO.getCategoryId());
+            vehicule.setKilometrage_updated(vehiculeDTO.getKilometrage_updated());
             vehicule.setUpdatedAt(new Date());
             return getVehicule(vehiculeDTO, vehicule);
         } else {
@@ -60,7 +78,7 @@ public class VehiculeService {
 
     private Vehicule getVehicule(VehiculeDTO vehiculeDTO, Vehicule vehicule) {
         vehicule.setMarque(vehiculeDTO.getMarque());
-        vehicule.setKilometrage(vehiculeDTO.getKilometrage());
+        vehicule.setModele(vehiculeDTO.getModele());
         vehicule.setTransmission(vehiculeDTO.getTransmission());
         vehicule.setCouleur(vehiculeDTO.getCouleur());
         vehicule.setDescription(vehiculeDTO.getDescription());
@@ -68,6 +86,8 @@ public class VehiculeService {
         vehicule.setPlaces(vehiculeDTO.getPlaces());
         vehicule.setBagage(vehiculeDTO.getBagage());
         vehicule.setPuissance(vehiculeDTO.getPuissance());
+        vehicule.setCapacity_reservoir(vehiculeDTO.getCapacity_reservoir());
+        vehicule.setCons_moy_Km(vehiculeDTO.getCons_moy_Km());
         vehicule.setAir_conditionner(vehiculeDTO.isAir_conditionner());
         vehicule.setChild_seat(vehiculeDTO.isChild_seat());
         vehicule.setClimatisation(vehiculeDTO.isClimatisation());
@@ -76,7 +96,7 @@ public class VehiculeService {
         vehicule.setGps(vehiculeDTO.isGps());
         vehicule.setBluetooth(vehiculeDTO.isBluetooth());
         vehicule.setSeat_belt(vehiculeDTO.isSeat_belt());
-        vehicule.setStatut(vehiculeDTO.isStatut());
+        vehicule.setStatut(true);
         return vehiculeRepository.save(vehicule);
     }
 

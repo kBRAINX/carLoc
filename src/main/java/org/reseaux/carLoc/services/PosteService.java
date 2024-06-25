@@ -23,8 +23,8 @@ public class PosteService {
         return posteRepository.findAll();
     }
 
-    public List<Poste> findByCategoryId(long categoryId) {
-        return posteRepository.findByCategoryId(categoryId);
+    public List<Poste> findByAgenceId(long agenceId) {
+        return posteRepository.findByAgenceId(agenceId);
     }
 
     public Optional<Poste> findOne(long posteId) {
@@ -35,10 +35,11 @@ public class PosteService {
         Poste poste = new Poste();
         Long newId = cassandraIdGenerator.getNextId("points_service");
         poste.setId(newId);
-        poste.setCategoryId(posteDTO.getCategoryId());
+        poste.setAgenceId(posteDTO.getAgenceId());
         poste.setName(posteDTO.getName());
         poste.setLocalisation(posteDTO.getLocalisation());
         poste.setSeige(posteDTO.getSiege());
+        poste.setDescription(posteDTO.getDescription());
         return posteRepository.save(poste);
     }
 
@@ -49,6 +50,7 @@ public class PosteService {
             poste.setName(posteDTO.getName());
             poste.setLocalisation(posteDTO.getLocalisation());
             poste.setSeige(posteDTO.getSiege());
+            poste.setDescription(posteDTO.getDescription());
             return posteRepository.save(poste);
         } else {
             throw new ResourceNotFoundException("Poste not found with id " + posteId);
