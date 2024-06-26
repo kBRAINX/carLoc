@@ -69,7 +69,17 @@
 					</excludes>
 				</configuration>
 			</plugin>
+            <!-- Plugin Heroku pour le déploiement -->
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>3.0.3</version>
+                <configuration>
+                    <appName>carloc</appName>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
+
 
 </project>
