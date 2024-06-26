@@ -11,8 +11,8 @@ public class CassandraIdGenerator {
     private final CqlSession cqlSession;
 
     @Autowired
-    public CassandraIdGenerator(CqlSessionFactoryBean cqlSession) {
-        this.cqlSession = (CqlSession) cqlSession;
+    public CassandraIdGenerator(CqlSession cqlSession) {
+        this.cqlSession = cqlSession;
     }
 
     public Long getNextId(String tableName) {
