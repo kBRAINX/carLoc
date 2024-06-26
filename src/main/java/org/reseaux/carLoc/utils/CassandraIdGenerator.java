@@ -2,9 +2,8 @@ package org.reseaux.carLoc.utils;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 @Component
 public class CassandraIdGenerator {
@@ -12,8 +11,8 @@ public class CassandraIdGenerator {
     private final CqlSession cqlSession;
 
     @Autowired
-    public CassandraIdGenerator(CqlSession cqlSession) {
-        this.cqlSession = cqlSession;
+    public CassandraIdGenerator(CqlSessionFactoryBean cqlSession) {
+        this.cqlSession = (CqlSession) cqlSession;
     }
 
     public Long getNextId(String tableName) {

@@ -3,6 +3,7 @@ package org.reseaux.carLoc.configs;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
 import org.springframework.data.cassandra.config.SessionFactoryFactoryBean;
@@ -51,6 +52,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     }
 
     @Bean
+    @Primary
     public CqlSessionFactoryBean session() {
         CqlSessionFactoryBean session = new CqlSessionFactoryBean();
         session.setContactPoints(contactPoints);
