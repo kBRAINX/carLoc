@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/postes")
+@CrossOrigin("*")
 public class PosteController {
 
     @Autowired

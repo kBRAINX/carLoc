@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,23 +24,33 @@ public class ImageVehiculeService {
     @Autowired
     private VehiculeRepository vehiculeRepository;
 
-    public ImageVehicule uploadImage(String vehiculeImmatriculation, MultipartFile file) throws IOException {
+    public List<ImageVehicule> uploadImage(String vehiculeImmatriculation, MultipartFile[] files) throws IOException {
         Optional<Vehicule> optionalVehicule = vehiculeRepository.findById(vehiculeImmatriculation);
         if (optionalVehicule.isPresent()) {
             Vehicule vehicule = optionalVehicule.get();
-            ImageVehicule imageVehicule = new ImageVehicule();
-            long newId = cassandraIdGenerator.getNextId("image_vehicule");
-            imageVehicule.setId(newId);
-            imageVehicule.setVehiculeImmatriculation(vehicule.getImmatriculation());
-            var imageToSave = ImageVehicule.builder()
-                .name(file.getOriginalFilename())
-                .type(file.getContentType())
-                .imageData(file.getBytes())
-                .build();
-            imageVehicule.setName(imageToSave.getName());
-            imageVehicule.setType(imageToSave.getType());
-            imageVehicule.setImageData(imageToSave.getImageData());
-            return  imageVehiculeRepository.save(imageVehicule);
+            List<ImageVehicule> savedImages = new ArrayList<>();
+
+            for (MultipartFile file : files) {
+                ImageVehicule imageVehicule = new ImageVehicule();
+                long newId = cassandraIdGenerator.getNextId("image_vehicule");
+                imageVehicule.setId(newId);
+                imageVehicule.setVehiculeImmatriculation(vehicule.getImmatriculation());
+
+                var imageToSave = ImageVehicule.builder()
+                    .name(file.getOriginalFilename())
+                    .type(file.getContentType())
+                    .imageData(file.getBytes())
+                    .build();
+
+                imageVehicule.setName(imageToSave.getName());
+                imageVehicule.setType(imageToSave.getType());
+                imageVehicule.setImageData(imageToSave.getImageData());
+
+                ImageVehicule savedImage = imageVehiculeRepository.save(imageVehicule);
+                savedImages.add(savedImage);
+            }
+
+            return savedImages;
         } else {
             throw new IOException("Vehicule not found");
         }

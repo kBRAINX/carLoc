@@ -59,6 +59,7 @@ public class VehiculeService {
         vehicule.setCategoryId(vehiculeDTO.getCategoryId());
         vehicule.setKilometrage_init(vehiculeDTO.getKilometrage_init());
         vehicule.setKilometrage_updated(vehiculeDTO.getKilometrage_init());
+        vehicule.setStatut(true);
         vehicule.setCreatedAt(new Date());
         return getVehicule(vehiculeDTO, vehicule);
     }
@@ -69,6 +70,7 @@ public class VehiculeService {
             Vehicule vehicule = optionalVehicule.get();
             vehicule.setCategoryId(vehiculeDTO.getCategoryId());
             vehicule.setKilometrage_updated(vehiculeDTO.getKilometrage_updated());
+            vehicule.setStatut(vehiculeDTO.isStatut());
             vehicule.setUpdatedAt(new Date());
             return getVehicule(vehiculeDTO, vehicule);
         } else {
@@ -96,7 +98,6 @@ public class VehiculeService {
         vehicule.setGps(vehiculeDTO.isGps());
         vehicule.setBluetooth(vehiculeDTO.isBluetooth());
         vehicule.setSeat_belt(vehiculeDTO.isSeat_belt());
-        vehicule.setStatut(true);
         return vehiculeRepository.save(vehicule);
     }
 

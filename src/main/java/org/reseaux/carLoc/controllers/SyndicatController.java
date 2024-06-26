@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/syndicats")
+@CrossOrigin("*")
 public class SyndicatController {
 
     @Autowired

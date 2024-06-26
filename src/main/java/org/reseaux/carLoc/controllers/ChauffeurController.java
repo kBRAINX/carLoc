@@ -2,14 +2,8 @@ package org.reseaux.carLoc.controllers;
 
 import org.reseaux.carLoc.dto.ChauffeurDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
-import org.reseaux.carLoc.models.Chauffeur;
-import org.reseaux.carLoc.models.Location;
-import org.reseaux.carLoc.models.Reservation;
-import org.reseaux.carLoc.models.PriceChauffeur;
-import org.reseaux.carLoc.services.ChauffeurService;
-import org.reseaux.carLoc.services.LocationService;
-import org.reseaux.carLoc.services.ReservationService;
-import org.reseaux.carLoc.services.PriceChauffeurService;
+import org.reseaux.carLoc.models.*;
+import org.reseaux.carLoc.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/chauffeurs")
+@CrossOrigin("*")
 public class ChauffeurController {
     @Autowired
     private ChauffeurService chauffeurService;
@@ -29,6 +24,8 @@ public class ChauffeurController {
     private ReservationService reservationService;
     @Autowired
     private LocationService locationService;
+    @Autowired
+    private NoteChauffeurService noteChauffeurService;
 
     @GetMapping
     public List<Chauffeur> findAll(){
@@ -63,6 +60,12 @@ public class ChauffeurController {
     public ResponseEntity<List<Location>> getLocations(@PathVariable("id") long chauffeurId){
         List<Location> locations = locationService.findByChauffeurId(chauffeurId);
         return new ResponseEntity<>(locations, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/notes")
+    public ResponseEntity<List<NoteChauffeur>> getNotes(@PathVariable("id") long chauffeurId){
+        List<NoteChauffeur> notes = noteChauffeurService.findAllByChauffeurId(chauffeurId);
+        return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 
     @PostMapping

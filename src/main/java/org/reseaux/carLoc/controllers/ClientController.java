@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/clients")
+@CrossOrigin("*")
 public class ClientController {
     @Autowired
     private ClientService clientService;

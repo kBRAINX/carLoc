@@ -2,10 +2,7 @@ package org.reseaux.carLoc.controllers;
 
 import org.reseaux.carLoc.dto.AgenceDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
-import org.reseaux.carLoc.models.Agence;
-import org.reseaux.carLoc.models.Category;
-import org.reseaux.carLoc.models.Chauffeur;
-import org.reseaux.carLoc.models.Poste;
+import org.reseaux.carLoc.models.*;
 import org.reseaux.carLoc.services.AgenceService;
 import org.reseaux.carLoc.services.CategoryService;
 import org.reseaux.carLoc.services.ChauffeurService;
@@ -20,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/agences")
+@CrossOrigin("*")
 public class AgenceController {
 
     @Autowired
@@ -58,6 +56,18 @@ public class AgenceController {
     public ResponseEntity<List<Chauffeur>> getChauffeur(@PathVariable("id") long agenceId) {
         List<Chauffeur> chauffeurs = chauffeurService.findByAgenceId(agenceId);
         return new ResponseEntity<>(chauffeurs, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/vehicules")
+    public ResponseEntity<List<Vehicule>> getAllVehiclesByAgenceId(@PathVariable long id) {
+        List<Vehicule> vehicules = agenceService.getAllVehiclesByAgenceId(id);
+        return new  ResponseEntity<>(vehicules, HttpStatus.OK);
+    }
+
+    @GetMapping("/{agenceId}/locations")
+    public ResponseEntity<List<Location>> getAllLocationsByAgence(@PathVariable long agenceId) {
+        List<Location> locations = agenceService.getAllLocationsByAgenceId(agenceId);
+        return ResponseEntity.ok(locations);
     }
 
     @PostMapping

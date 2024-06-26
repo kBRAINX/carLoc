@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/vehicules")
+@CrossOrigin("*")
 public class VehiculeController {
 
     @Autowired
@@ -104,6 +105,9 @@ public class VehiculeController {
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
+//    @GetMapping("/{immatriculation}/notes")
+
+
     @PostMapping
     public ResponseEntity<Vehicule> create(@RequestBody VehiculeDTO vehiculeDTO) {
         Vehicule createdVehicule = vehiculeService.create(vehiculeDTO);
@@ -111,12 +115,12 @@ public class VehiculeController {
     }
 
     @PostMapping("/{vehiculeImmatriculation}/images")
-    public ResponseEntity<ImageVehicule> uploadImage(@PathVariable String vehiculeImmatriculation, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<List<ImageVehicule>> uploadImages(@PathVariable String vehiculeImmatriculation, @RequestPart("files") MultipartFile[] files) {
         try {
-            ImageVehicule uploadedImage = imageVehiculeService.uploadImage(vehiculeImmatriculation, file);
-            return ResponseEntity.ok(uploadedImage);
+            List<ImageVehicule> uploadedImages = imageVehiculeService.uploadImage(vehiculeImmatriculation, files);
+            return ResponseEntity.ok(uploadedImages);
         } catch (IOException e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

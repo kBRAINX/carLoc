@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/imagePoste")
+@CrossOrigin("*")
 public class PosteImageController {
     @Autowired
     private PosteImageService posteImageService;

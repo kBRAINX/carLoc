@@ -3,11 +3,15 @@ package org.reseaux.carLoc.services;
 import org.reseaux.carLoc.dto.AgenceDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.Agence;
+import org.reseaux.carLoc.models.Location;
+import org.reseaux.carLoc.models.Poste;
+import org.reseaux.carLoc.models.Vehicule;
 import org.reseaux.carLoc.repositories.AgenceRepository;
 import org.reseaux.carLoc.utils.CassandraIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,12 @@ public class AgenceService {
 
     @Autowired
     private CassandraIdGenerator cassandraIdGenerator;
+    @Autowired
+    private PosteService posteService;
+    @Autowired
+    private VehiculeService vehiculeService;
+    @Autowired
+    private LocationService locationService;
 
     public List<Agence> findAll() {
         return (List<Agence>) agenceRepository.findAll();
@@ -50,6 +60,26 @@ public class AgenceService {
         } else {
             throw new ResourceNotFoundException("Agence not found with id " + id);
         }
+    }
+
+    public List<Vehicule> getAllVehiclesByAgenceId(long agenceId) {
+        List<Vehicule> allVehicles = new ArrayList<>();
+        List<Poste> postes = posteService.findByAgenceId(agenceId);
+        for (Poste poste : postes) {
+            List<Vehicule> vehicules = vehiculeService.findByPosteId(poste.getId());
+            allVehicles.addAll(vehicules);
+        }
+        return allVehicles;
+    }
+
+    public List<Location> getAllLocationsByAgenceId(long agenceId) {
+        List<Location> allLocations = new ArrayList<>();
+        List<Vehicule> vehicules = getAllVehiclesByAgenceId(agenceId);
+        for (Vehicule vehicule : vehicules) {
+            List<Location> locations = locationService.findByVehiculeId(vehicule.getImmatriculation());
+            allLocations.addAll(locations);
+        }
+        return allLocations;
     }
 
     public void delete(long id) {

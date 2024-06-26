@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/image_vehicules")
+@CrossOrigin("*")
 public class ImageVehiculeController {
 
     @Autowired

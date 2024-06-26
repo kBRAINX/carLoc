@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/prix_carburant")
+@CrossOrigin("*")
 public class PrixCarburantController {
     @Autowired
     private PrixCarburantService prixCarburantService;
@@ -30,7 +31,7 @@ public class PrixCarburantController {
         return prixCarburant.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/carburant/{carburant}")
+    @GetMapping("/{carburant}")
     public ResponseEntity<PrixCarburant> findByCarburant(@PathVariable Carburant carburant) {
         Optional<PrixCarburant> prixCarburant = prixCarburantService.findByCarburant(carburant);
         return prixCarburant.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
