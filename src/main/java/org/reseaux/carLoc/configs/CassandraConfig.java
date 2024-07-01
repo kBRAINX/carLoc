@@ -2,6 +2,7 @@ package org.reseaux.carLoc.configs;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.internal.core.ssl.DefaultSslEngineFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +52,12 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         return SchemaAction.CREATE_IF_NOT_EXISTS;
     }
 
-    @Bean
+    @Override
+    protected String getLocalDataCenter() {
+        return astraDbRegion;
+    }
+
+    @Bean(name = "session")
     public CqlSession session() {
         DriverConfigLoader loader = DriverConfigLoader.programmaticBuilder()
             .withStringList(DefaultDriverOption.CONTACT_POINTS,
@@ -70,7 +76,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     }
 
     @Bean
-    public CassandraTemplate cassandraTemplate(CqlSession session) {
+    public CassandraTemplate cassandraTemplate(@Qualifier("session") CqlSession session) {
         return new CassandraTemplate(session);
     }
 }

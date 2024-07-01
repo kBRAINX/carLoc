@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
+//@EnableCassandraRepositories
 public class CarLocApplication {
 
 	public static void main(String[] args) {
