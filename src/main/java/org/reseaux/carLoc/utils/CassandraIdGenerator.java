@@ -3,7 +3,6 @@ package org.reseaux.carLoc.utils;
 import com.datastax.oss.driver.api.core.CqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
 import org.springframework.stereotype.Component;
 
 @Component
