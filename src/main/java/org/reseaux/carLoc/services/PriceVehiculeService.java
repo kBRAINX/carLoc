@@ -21,7 +21,7 @@ public class PriceVehiculeService {
     private CassandraIdGenerator cassandraIdGenerator;
 
     public List<PriceVehicule> findAll() {
-        return (List<PriceVehicule>) priceVehiculeRepository.findAll();
+        return priceVehiculeRepository.findAll();
     }
 
     public Optional<PriceVehicule> findOne(long id) {
