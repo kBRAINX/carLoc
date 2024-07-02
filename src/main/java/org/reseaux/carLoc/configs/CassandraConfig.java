@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.CassandraTemplate;
@@ -14,6 +15,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 
 @Configuration
@@ -57,12 +59,12 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         return astraDbRegion;
     }
 
+    @Primary
     @Bean(name = "session")
     public CqlSession session() {
         DriverConfigLoader loader = DriverConfigLoader.programmaticBuilder()
             .withStringList(DefaultDriverOption.CONTACT_POINTS,
                 List.of(String.format("%s-%s.apps.astra.datastax.com", astraDbId, astraDbRegion)))
-            .withInt(DefaultDriverOption.CONTACT_POINTS, 443)
             .withString(DefaultDriverOption.AUTH_PROVIDER_USER_NAME, "token")
             .withString(DefaultDriverOption.AUTH_PROVIDER_PASSWORD, astraDbApplicationToken)
             .withString(DefaultDriverOption.LOAD_BALANCING_LOCAL_DATACENTER, astraDbRegion)
@@ -71,6 +73,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
 
         return CqlSession.builder()
             .withConfigLoader(loader)
+            .addContactPoint(new InetSocketAddress(getContactPoints(), getPort()))
             .withKeyspace(astraDbKeyspace)
             .build();
     }
