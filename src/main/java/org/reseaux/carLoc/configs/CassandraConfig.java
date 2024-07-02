@@ -1,6 +1,8 @@
 package org.reseaux.carLoc.configs;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
+import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.internal.core.ssl.DefaultSslEngineFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,9 +12,6 @@ import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
-
-import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
-import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -63,6 +62,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         DriverConfigLoader loader = DriverConfigLoader.programmaticBuilder()
             .withStringList(DefaultDriverOption.CONTACT_POINTS,
                 List.of(String.format("%s-%s.apps.astra.datastax.com", astraDbId, astraDbRegion)))
+            .withInt(DefaultDriverOption.CONNECTION_INIT_QUERY_TIMEOUT, 10000) // 10 seconds timeout
             .withString(DefaultDriverOption.AUTH_PROVIDER_USER_NAME, "token")
             .withString(DefaultDriverOption.AUTH_PROVIDER_PASSWORD, astraDbApplicationToken)
             .withString(DefaultDriverOption.LOAD_BALANCING_LOCAL_DATACENTER, astraDbRegion)
@@ -81,5 +81,3 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
         return new CassandraTemplate(session);
     }
 }
-
-
