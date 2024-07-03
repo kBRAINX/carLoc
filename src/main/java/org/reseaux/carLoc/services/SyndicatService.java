@@ -14,11 +14,14 @@ import java.util.Optional;
 @Service
 public class SyndicatService {
 
-    @Autowired
-    private SyndicatRepository syndicatRepository;
+    private final SyndicatRepository syndicatRepository;
 
     @Autowired
     private CassandraIdGenerator cassandraIdGenerator;
+
+    public SyndicatService(SyndicatRepository syndicatRepository) {
+        this.syndicatRepository = syndicatRepository;
+    }
 
     public List<Syndicat> findAll() {
         return syndicatRepository.findAll();
