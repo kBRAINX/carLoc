@@ -14,16 +14,16 @@ import java.nio.file.Paths;
 @EnableCassandraRepositories(basePackages = "org.reseaux.carLoc.repositories")
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
-    @Value("${spring.data.cassandra.keyspace-name}")
+    @Value("${spring.cassandra.keyspace-name}")
     private String keyspaceName;
 
-    @Value("${spring.data.cassandra.username}")
+    @Value("${spring.cassandra.username}")
     private String username;
 
-    @Value("${spring.data.cassandra.password}")
+    @Value("${spring.cassandra.password}")
     private String password;
 
-    @Value("${spring.data.cassandra.connection.bundle}")
+    @Value("${spring.cassandra.connection.bundle}")
     private String secureConnectBundlePath;
 
     @Override
