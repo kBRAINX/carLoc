@@ -1,10 +1,8 @@
 package org.reseaux.carLoc.services;
 
 import org.reseaux.carLoc.dto.ChauffeurDTO;
-import org.reseaux.carLoc.dto.SyndicatDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.Chauffeur;
-import org.reseaux.carLoc.models.Syndicat;
 import org.reseaux.carLoc.repositories.ChauffeurRepository;
 import org.reseaux.carLoc.utils.CassandraIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
