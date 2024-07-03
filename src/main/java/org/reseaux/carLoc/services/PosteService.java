@@ -14,10 +14,14 @@ import java.util.Optional;
 @Service
 public class PosteService {
 
-    @Autowired
-    private PosteRepository posteRepository;
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    private final PosteRepository posteRepository;
+
+    private final CassandraIdGenerator cassandraIdGenerator;
+
+    public PosteService(PosteRepository posteRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.posteRepository = posteRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public List<Poste> findAll() {
         return posteRepository.findAll();

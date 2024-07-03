@@ -16,6 +16,7 @@ import java.util.Optional;
 public class PriceChauffeurService {
     @Autowired
     private PriceChauffeurRepository priceChauffeurRepository;
+
     @Autowired
     private CassandraIdGenerator cassandraIdGenerator;
 
