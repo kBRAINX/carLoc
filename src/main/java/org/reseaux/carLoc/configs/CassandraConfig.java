@@ -40,8 +40,8 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
             .build();
     }
 
-    @Bean
-    public CassandraTemplate cassandraTemplate(CqlSession session) {
-        return new CassandraTemplate(session);
-    }
+//    @Bean
+//    public CassandraTemplate cassandraTemplate(CqlSession session) {
+//        return new CassandraTemplate(session);
+//    }
 }
