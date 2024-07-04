@@ -18,21 +18,17 @@ import java.util.Optional;
 @Service
 public class AgenceService {
 
-    private final AgenceRepository agenceRepository;
-
-    private final CassandraIdGenerator cassandraIdGenerator;
-    private final PosteService posteService;
-    private final VehiculeService vehiculeService;
-    private final LocationService locationService;
+    @Autowired
+    private AgenceRepository agenceRepository;
 
     @Autowired
-    public AgenceService(AgenceRepository agenceRepository, CassandraIdGenerator cassandraIdGenerator, PosteService posteService, VehiculeService vehiculeService, LocationService locationService) {
-        this.agenceRepository = agenceRepository;
-        this.cassandraIdGenerator = cassandraIdGenerator;
-        this.posteService = posteService;
-        this.vehiculeService = vehiculeService;
-        this.locationService = locationService;
-    }
+    private CassandraIdGenerator cassandraIdGenerator;
+    @Autowired
+    private PosteService posteService;
+    @Autowired
+    private VehiculeService vehiculeService;
+    @Autowired
+    private LocationService locationService;
 
     public List<Agence> findAll() {
         return agenceRepository.findAll();

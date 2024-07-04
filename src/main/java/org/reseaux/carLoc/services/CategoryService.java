@@ -14,15 +14,11 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
-    private final CategoryRepository categoryRepository;
-
-    private final CassandraIdGenerator cassandraIdGenerator;
-
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, CassandraIdGenerator cassandraIdGenerator) {
-        this.categoryRepository = categoryRepository;
-        this.cassandraIdGenerator = cassandraIdGenerator;
-    }
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private  CassandraIdGenerator cassandraIdGenerator;
+
 
     public List<Category> findAll() {
         return categoryRepository.findAll();
