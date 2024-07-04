@@ -13,7 +13,7 @@ public class CassandraIdGenerator {
     private final CqlSession cqlSession;
 
     @Autowired
-    public CassandraIdGenerator(@Qualifier("session") CqlSession cqlSession) {
+    public CassandraIdGenerator(CqlSession cqlSession) {
         this.cqlSession = cqlSession;
     }
 
