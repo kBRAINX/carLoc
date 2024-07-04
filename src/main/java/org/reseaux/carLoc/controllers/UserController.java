@@ -18,11 +18,14 @@ import java.util.Optional;
 @RequestMapping("/users")
 @CrossOrigin("*")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final AgenceService agenceService;
 
     @Autowired
-    private AgenceService agenceService;
+    public UserController(UserService userService, AgenceService agenceService) {
+        this.userService = userService;
+        this.agenceService = agenceService;
+    }
 
     @GetMapping
     public ResponseEntity<List<User>> findAll() {

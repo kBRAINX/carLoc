@@ -17,8 +17,12 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class LocationController {
 
+    private final LocationService locationService;
+
     @Autowired
-    private LocationService locationService;
+    public LocationController(LocationService locationService) {
+        this.locationService = locationService;
+    }
 
     @GetMapping
     public List<Location> findAll() {

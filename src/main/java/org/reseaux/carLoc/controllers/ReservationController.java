@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/reservations")
 @CrossOrigin("*")
 public class ReservationController {
+    private final ReservationService reservationService;
+
     @Autowired
-    private ReservationService reservationService;
+    public ReservationController(ReservationService reservationService) {
+        this.reservationService = reservationService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Reservation>> findAll() {

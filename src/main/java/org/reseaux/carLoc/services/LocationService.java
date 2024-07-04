@@ -20,15 +20,18 @@ import java.util.Optional;
 @Service
 public class LocationService {
 
-    @Autowired
-    private LocationRepository locationRepository;
+    private final LocationRepository locationRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
+    private final ReservationRepository reservationRepository;
+    private final PrixCarburantRepository prixCarburantRepository;
 
     @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
-    @Autowired
-    private ReservationRepository reservationRepository;
-    @Autowired
-    private PrixCarburantRepository prixCarburantRepository;
+    public LocationService(LocationRepository locationRepository, CassandraIdGenerator cassandraIdGenerator, ReservationRepository reservationRepository, PrixCarburantRepository prixCarburantRepository) {
+        this.locationRepository = locationRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+        this.reservationRepository = reservationRepository;
+        this.prixCarburantRepository = prixCarburantRepository;
+    }
 
     public List<Location> findAll() {
         return locationRepository.findAll();

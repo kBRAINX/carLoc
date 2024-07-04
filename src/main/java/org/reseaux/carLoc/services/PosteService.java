@@ -18,6 +18,7 @@ public class PosteService {
 
     private final CassandraIdGenerator cassandraIdGenerator;
 
+    @Autowired
     public PosteService(PosteRepository posteRepository, CassandraIdGenerator cassandraIdGenerator) {
         this.posteRepository = posteRepository;
         this.cassandraIdGenerator = cassandraIdGenerator;

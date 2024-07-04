@@ -15,12 +15,16 @@ import java.util.Optional;
 
 @Service
 public class PosteImageService {
+    private final PosteImageRepository posteImageRepository;
+    private final PosteRepository posteRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
+
     @Autowired
-    private PosteImageRepository posteImageRepository;
-    @Autowired
-    private PosteRepository posteRepository;
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    public PosteImageService(PosteImageRepository posteImageRepository, PosteRepository posteRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.posteImageRepository = posteImageRepository;
+        this.posteRepository = posteRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public PosteImage uploadImage(long posteId, MultipartFile file) throws IOException {
         Optional<Poste> optionalPoste = posteRepository.findById(posteId);

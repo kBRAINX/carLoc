@@ -16,8 +16,12 @@ import java.util.Optional;
 @RequestMapping("/prices_Chauffeur")
 @CrossOrigin("*")
 public class PriceChauffeurController {
+    private final PriceChauffeurService priceChauffeurService;
+
     @Autowired
-    private PriceChauffeurService priceChauffeurService;
+    public PriceChauffeurController(PriceChauffeurService priceChauffeurService) {
+        this.priceChauffeurService = priceChauffeurService;
+    }
 
     @GetMapping
     public List<PriceChauffeur> findAll() {

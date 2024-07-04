@@ -19,10 +19,14 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class SyndicatController {
 
+    private final SyndicatService syndicatService;
+    private final ChauffeurService chauffeurService;
+
     @Autowired
-    private SyndicatService syndicatService;
-    @Autowired
-    private ChauffeurService chauffeurService;
+    public SyndicatController(SyndicatService syndicatService, ChauffeurService chauffeurService) {
+        this.syndicatService = syndicatService;
+        this.chauffeurService = chauffeurService;
+    }
 
     @GetMapping
     public List<Syndicat> findAll() {

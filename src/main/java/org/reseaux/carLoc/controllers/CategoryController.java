@@ -19,11 +19,15 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    private final VehiculeService vehiculeService;
 
     @Autowired
-    private VehiculeService vehiculeService;
+    public CategoryController(CategoryService categoryService, VehiculeService vehiculeService) {
+        this.categoryService = categoryService;
+        this.vehiculeService = vehiculeService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Category>> findAll() {

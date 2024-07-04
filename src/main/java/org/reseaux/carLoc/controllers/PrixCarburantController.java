@@ -17,8 +17,12 @@ import java.util.Optional;
 @RequestMapping("/prix_carburant")
 @CrossOrigin("*")
 public class PrixCarburantController {
+    private final PrixCarburantService prixCarburantService;
+
     @Autowired
-    private PrixCarburantService prixCarburantService;
+    public PrixCarburantController(PrixCarburantService prixCarburantService) {
+        this.prixCarburantService = prixCarburantService;
+    }
 
     @GetMapping
     public List<PrixCarburant> findAll() {

@@ -16,8 +16,12 @@ import java.io.IOException;
 @RequestMapping("/imagePoste")
 @CrossOrigin("*")
 public class PosteImageController {
+    private final PosteImageService posteImageService;
+
     @Autowired
-    private PosteImageService posteImageService;
+    public PosteImageController(PosteImageService posteImageService) {
+        this.posteImageService = posteImageService;
+    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<PosteImage> update(@PathVariable("id") Long imageId, @RequestParam("file") MultipartFile file) {

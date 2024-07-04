@@ -17,12 +17,16 @@ import java.util.Optional;
 @Service
 public class ImageVehiculeService {
 
+    private final ImageVehiculeRepository imageVehiculeRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
+    private final VehiculeRepository vehiculeRepository;
+
     @Autowired
-    private ImageVehiculeRepository imageVehiculeRepository;
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
-    @Autowired
-    private VehiculeRepository vehiculeRepository;
+    public ImageVehiculeService(ImageVehiculeRepository imageVehiculeRepository, CassandraIdGenerator cassandraIdGenerator, VehiculeRepository vehiculeRepository) {
+        this.imageVehiculeRepository = imageVehiculeRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+        this.vehiculeRepository = vehiculeRepository;
+    }
 
     public List<ImageVehicule> uploadImage(String vehiculeImmatriculation, MultipartFile[] files) throws IOException {
         Optional<Vehicule> optionalVehicule = vehiculeRepository.findById(vehiculeImmatriculation);

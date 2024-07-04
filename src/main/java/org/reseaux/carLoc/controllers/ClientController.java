@@ -20,12 +20,16 @@ import java.util.Optional;
 @RequestMapping("/clients")
 @CrossOrigin("*")
 public class ClientController {
+    private final ClientService clientService;
+    private final ReservationService reservationService;
+    private final LocationService locationService;
+
     @Autowired
-    private ClientService clientService;
-    @Autowired
-    private ReservationService reservationService;
-    @Autowired
-    private LocationService locationService;
+    public ClientController(ClientService clientService, ReservationService reservationService, LocationService locationService) {
+        this.clientService = clientService;
+        this.reservationService = reservationService;
+        this.locationService = locationService;
+    }
 
     @GetMapping
     public List<Client> findAll() {

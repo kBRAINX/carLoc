@@ -14,10 +14,14 @@ import java.util.Optional;
 
 @Service
 public class ClientService {
+    private final ClientRepository clientRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
+
     @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    public ClientService(ClientRepository clientRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.clientRepository = clientRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public List<Client> findAll() {
         return clientRepository.findAll();

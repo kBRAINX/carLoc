@@ -16,8 +16,12 @@ import java.util.Optional;
 @Service
 public class VehiculeService {
 
+    private final VehiculeRepository vehiculeRepository;
+
     @Autowired
-    private VehiculeRepository vehiculeRepository;
+    public VehiculeService(VehiculeRepository vehiculeRepository) {
+        this.vehiculeRepository = vehiculeRepository;
+    }
 
     public List<Vehicule> findAll() {
         return vehiculeRepository.findAll();

@@ -23,13 +23,17 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class PosteController {
 
-    @Autowired
-    private PosteService posteService;
+    private final PosteService posteService;
+
+    private final VehiculeService vehiculeService;
+    private final PosteImageService posteImageService;
 
     @Autowired
-    private VehiculeService vehiculeService;
-    @Autowired
-    private PosteImageService posteImageService;
+    public PosteController(PosteService posteService, VehiculeService vehiculeService, PosteImageService posteImageService) {
+        this.posteService = posteService;
+        this.vehiculeService = vehiculeService;
+        this.posteImageService = posteImageService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Poste>> findAll() {

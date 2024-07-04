@@ -14,11 +14,14 @@ import java.util.Optional;
 @Service
 public class PriceVehiculeService {
 
-    @Autowired
-    private PriceVehiculeRepository priceVehiculeRepository;
+    private final PriceVehiculeRepository priceVehiculeRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
 
     @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    public PriceVehiculeService(PriceVehiculeRepository priceVehiculeRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.priceVehiculeRepository = priceVehiculeRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public List<PriceVehicule> findAll() {
         return priceVehiculeRepository.findAll();

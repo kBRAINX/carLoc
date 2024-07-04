@@ -16,11 +16,12 @@ public class SyndicatService {
 
     private final SyndicatRepository syndicatRepository;
 
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    private final CassandraIdGenerator cassandraIdGenerator;
 
-    public SyndicatService(SyndicatRepository syndicatRepository) {
+    @Autowired
+    public SyndicatService(SyndicatRepository syndicatRepository, CassandraIdGenerator cassandraIdGenerator) {
         this.syndicatRepository = syndicatRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
     }
 
     public List<Syndicat> findAll() {

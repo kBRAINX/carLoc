@@ -17,20 +17,24 @@ import java.util.Optional;
 
 @Service
 public class ReservationService {
+    private final ReservationRepository reservationRepository;
+    private final VehiculeRepository vehiculeRepository;
+    private final ChauffeurRepository chauffeurRepository;
+    private final PriceVehiculeRepository priceVehiculeRepository;
+    private final PriceChauffeurRepository priceChauffeurRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
+    private final ClientRepository clientRepository;
+
     @Autowired
-    private ReservationRepository reservationRepository;
-    @Autowired
-    private VehiculeRepository vehiculeRepository;
-    @Autowired
-    private ChauffeurRepository chauffeurRepository;
-    @Autowired
-    private PriceVehiculeRepository priceVehiculeRepository;
-    @Autowired
-    private PriceChauffeurRepository priceChauffeurRepository;
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
-    @Autowired
-    private ClientRepository clientRepository;
+    public ReservationService(ReservationRepository reservationRepository, VehiculeRepository vehiculeRepository, ChauffeurRepository chauffeurRepository, PriceVehiculeRepository priceVehiculeRepository, PriceChauffeurRepository priceChauffeurRepository, CassandraIdGenerator cassandraIdGenerator, ClientRepository clientRepository) {
+        this.reservationRepository = reservationRepository;
+        this.vehiculeRepository = vehiculeRepository;
+        this.chauffeurRepository = chauffeurRepository;
+        this.priceVehiculeRepository = priceVehiculeRepository;
+        this.priceChauffeurRepository = priceChauffeurRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+        this.clientRepository = clientRepository;
+    }
 
 
     public List<Reservation> findAll() {

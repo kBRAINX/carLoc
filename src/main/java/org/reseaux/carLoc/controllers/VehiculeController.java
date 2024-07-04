@@ -21,20 +21,24 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class VehiculeController {
 
+    private final VehiculeService vehiculeService;
+    private final ImageVehiculeService imageVehiculeService;
+    private final PriceVehiculeService priceVehiculeService;
+    private final ReservationService reservationService;
+    private final PosteService posteService;
+    private final ChauffeurService chauffeurService;
+    private final LocationService locationService;
+
     @Autowired
-    private VehiculeService vehiculeService;
-    @Autowired
-    private ImageVehiculeService imageVehiculeService;
-    @Autowired
-    private PriceVehiculeService priceVehiculeService;
-    @Autowired
-    private ReservationService reservationService;
-    @Autowired
-    private PosteService posteService;
-    @Autowired
-    private ChauffeurService chauffeurService;
-    @Autowired
-    private LocationService locationService;
+    public VehiculeController(VehiculeService vehiculeService, ImageVehiculeService imageVehiculeService, PriceVehiculeService priceVehiculeService, ReservationService reservationService, PosteService posteService, ChauffeurService chauffeurService, LocationService locationService) {
+        this.vehiculeService = vehiculeService;
+        this.imageVehiculeService = imageVehiculeService;
+        this.priceVehiculeService = priceVehiculeService;
+        this.reservationService = reservationService;
+        this.posteService = posteService;
+        this.chauffeurService = chauffeurService;
+        this.locationService = locationService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Vehicule>> findAll() {

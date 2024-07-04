@@ -17,8 +17,12 @@ import java.io.IOException;
 @CrossOrigin("*")
 public class ImageVehiculeController {
 
+    private final ImageVehiculeService imageVehiculeService;
+
     @Autowired
-    private ImageVehiculeService imageVehiculeService;
+    public ImageVehiculeController(ImageVehiculeService imageVehiculeService) {
+        this.imageVehiculeService = imageVehiculeService;
+    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ImageVehicule> update(@PathVariable("id") Long imageId, @RequestParam("file") MultipartFile file) {

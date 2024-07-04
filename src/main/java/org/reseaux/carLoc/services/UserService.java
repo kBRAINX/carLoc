@@ -13,10 +13,14 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    public UserService(UserRepository userRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.userRepository = userRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public List<User> findAll() {
         return userRepository.findAll();

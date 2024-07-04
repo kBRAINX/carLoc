@@ -14,11 +14,14 @@ import java.util.Optional;
 @Service
 public class NoteChauffeurService {
 
-    @Autowired
-    private NoteChauffeurRepository noteChauffeurRepository;
+    private final NoteChauffeurRepository noteChauffeurRepository;
+    private final CassandraIdGenerator cassandraIdGenerator;
 
     @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    public NoteChauffeurService(NoteChauffeurRepository noteChauffeurRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.noteChauffeurRepository = noteChauffeurRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public List<NoteChauffeur> findAll() {
         return noteChauffeurRepository.findAll();

@@ -17,8 +17,12 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class NoteChauffeurController {
 
+    private final NoteChauffeurService noteChauffeurService;
+
     @Autowired
-    private NoteChauffeurService noteChauffeurService;
+    public NoteChauffeurController(NoteChauffeurService noteChauffeurService) {
+        this.noteChauffeurService = noteChauffeurService;
+    }
 
     @GetMapping
     public List<NoteChauffeur> findAll() {
