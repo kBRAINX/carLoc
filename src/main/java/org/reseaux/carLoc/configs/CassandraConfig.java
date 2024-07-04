@@ -1,11 +1,11 @@
 package org.reseaux.carLoc.configs;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
-import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
 import java.nio.file.Paths;
@@ -27,7 +27,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     private String secureConnectBundlePath;
 
     @Override
-    protected String getKeyspaceName() {
+    protected @NotNull String getKeyspaceName() {
         return keyspaceName;
     }
 
@@ -39,9 +39,4 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
             .withKeyspace(keyspaceName)
             .build();
     }
-
-//    @Bean
-//    public CassandraTemplate cassandraTemplate(CqlSession session) {
-//        return new CassandraTemplate(session);
-//    }
 }

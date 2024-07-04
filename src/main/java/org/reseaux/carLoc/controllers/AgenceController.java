@@ -20,14 +20,18 @@ import java.util.Optional;
 @CrossOrigin("*")
 public class AgenceController {
 
+    private final AgenceService agenceService;
+    private final PosteService posteService;
+    private final CategoryService categoryService;
+    private final ChauffeurService chauffeurService;
+
     @Autowired
-    private AgenceService agenceService;
-    @Autowired
-    private PosteService posteService;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ChauffeurService chauffeurService;
+    public AgenceController(AgenceService agenceService, PosteService posteService, CategoryService categoryService, ChauffeurService chauffeurService) {
+        this.agenceService = agenceService;
+        this.posteService = posteService;
+        this.categoryService = categoryService;
+        this.chauffeurService = chauffeurService;
+    }
 
     @GetMapping
     public List<Agence> getAllAgences() {
@@ -61,7 +65,7 @@ public class AgenceController {
     @GetMapping("/{id}/vehicules")
     public ResponseEntity<List<Vehicule>> getAllVehiclesByAgenceId(@PathVariable long id) {
         List<Vehicule> vehicules = agenceService.getAllVehiclesByAgenceId(id);
-        return new  ResponseEntity<>(vehicules, HttpStatus.OK);
+        return new ResponseEntity<>(vehicules, HttpStatus.OK);
     }
 
     @GetMapping("/{agenceId}/locations")
@@ -75,7 +79,7 @@ public class AgenceController {
         return agenceService.create(agenceDTO);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Agence> updateAgence(@PathVariable long id, @RequestBody AgenceDTO agenceDTO) {
         try {
             Agence updatedAgence = agenceService.update(id, agenceDTO);
