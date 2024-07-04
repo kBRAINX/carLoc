@@ -3,7 +3,6 @@ package org.reseaux.carLoc.services;
 import org.reseaux.carLoc.dto.CategoryDTO;
 import org.reseaux.carLoc.exceptions.ResourceNotFoundException;
 import org.reseaux.carLoc.models.Category;
-import org.reseaux.carLoc.models.Poste;
 import org.reseaux.carLoc.repositories.CategoryRepository;
 import org.reseaux.carLoc.utils.CassandraIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,15 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+
+    private final CassandraIdGenerator cassandraIdGenerator;
 
     @Autowired
-    private CassandraIdGenerator cassandraIdGenerator;
+    public CategoryService(CategoryRepository categoryRepository, CassandraIdGenerator cassandraIdGenerator) {
+        this.categoryRepository = categoryRepository;
+        this.cassandraIdGenerator = cassandraIdGenerator;
+    }
 
     public List<Category> findAll() {
         return categoryRepository.findAll();
