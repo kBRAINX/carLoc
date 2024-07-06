@@ -2,12 +2,13 @@ package org.reseaux.carLoc.utils;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
 @Component
+@DependsOn("session")
 public class CassandraIdGenerator {
 
     private final CqlSession cqlSession;
@@ -26,4 +27,3 @@ public class CassandraIdGenerator {
         return currentMaxId != null ? currentMaxId + 1 : 1L;
     }
 }
-
