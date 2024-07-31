@@ -26,7 +26,10 @@ public class AgenceController {
     private final ChauffeurService chauffeurService;
 
     @Autowired
-    public AgenceController(AgenceService agenceService, PosteService posteService, CategoryService categoryService, ChauffeurService chauffeurService) {
+    public AgenceController(AgenceService agenceService,
+                            PosteService posteService,
+                            CategoryService categoryService,
+                            ChauffeurService chauffeurService) {
         this.agenceService = agenceService;
         this.posteService = posteService;
         this.categoryService = categoryService;
